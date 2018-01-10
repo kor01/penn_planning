@@ -96,7 +96,7 @@ while true
     
     if ((current == dest_node) || isinf(min_f))
         break;
-    end;
+    end
     
     % Update input_map
     map(current) = 3;
@@ -110,13 +110,39 @@ while true
     % Visit all of the neighbors around the current node and update the
     % entries in the map, f, g and parent arrays
     %
+        
+    neighbors = [0 0 1 -1; 1 -1 0 0];
     
+    for neighbor = neighbors
+         
+        ci = neighbor(1) + i; cj = neighbor(2) + j;
+        
+        if ci <= 0 || ci > nrows
+            continue
+        end
+        
+        if cj <= 0 || cj > ncols
+            continue
+        end
+        
+        % visited or obstacle
+        if map(ci, cj) == 2 || map(ci, cj) == 3 || map(ci, cj) == 5
+            continue
+        end
+        
+        dst = g(current) + 1;
+        
+        if dst < g(ci, cj)
+            g(ci, cj) = dst;
+            parent(ci, cj) = current;
+            f(ci, cj) = dst + H(ci, cj);
+            map(ci, cj) = 4;
+        end
+    end
     
-    
-    
+    numExpanded = numExpanded + 1;
     
     %*********************************************************************
-    
     
 end
 
